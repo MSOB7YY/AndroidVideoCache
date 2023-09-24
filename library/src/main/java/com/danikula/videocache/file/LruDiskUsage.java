@@ -26,7 +26,7 @@ public abstract class LruDiskUsage implements DiskUsage {
     }
 
     private void touchInBackground(File file) throws IOException {
-        Files.setLastModifiedNow(file);
+        Files.setLastAccessedNow(file);
         List<File> files = Files.getLruListFiles(file.getParentFile());
         trim(files);
     }

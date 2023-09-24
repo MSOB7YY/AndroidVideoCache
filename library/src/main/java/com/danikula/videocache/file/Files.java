@@ -1,11 +1,13 @@
 package com.danikula.videocache.file;
 
+import android.os.Build;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,9 +42,20 @@ class Files {
         File[] files = directory.listFiles();
         if (files != null) {
             result = Arrays.asList(files);
-            Collections.sort(result, new LastModifiedComparator());
+            Collections.sort(result, new LastAccessedComparator());
         }
         return result;
+    }
+
+    static void setLastAccessedNow(File file) throws IOException {
+        if (file.exists()) {
+            long now = System.currentTimeMillis();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                java.nio.file.Files.setAttribute(file.toPath(), "lastAccessTime", now);
+            } else {
+                setLastModifiedNow(file);
+            }
+        }
     }
 
     static void setLastModifiedNow(File file) throws IOException {
@@ -80,16 +93,22 @@ class Files {
         }
     }
 
-    private static final class LastModifiedComparator implements Comparator<File> {
+    private static final class LastAccessedComparator implements Comparator<File> {
 
         @Override
         public int compare(File lhs, File rhs) {
-            return compareLong(lhs.lastModified(), rhs.lastModified());
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                try {
+                    final BasicFileAttributes lhsAttrs = java.nio.file.Files.readAttributes(lhs.toPath(), BasicFileAttributes.class);
+                    final BasicFileAttributes rhsAttrs = java.nio.file.Files.readAttributes(rhs.toPath(), BasicFileAttributes.class);
+                    return Long.compare(lhsAttrs.lastAccessTime().toMillis(), rhsAttrs.lastAccessTime().toMillis());
+                } catch (IOException ignore) {
+                }
+
+            }
+            return Long.compare(lhs.lastModified(), rhs.lastModified());
         }
 
-        private int compareLong(long first, long second) {
-            return (first < second) ? -1 : ((first == second) ? 0 : 1);
-        }
     }
 
 }
