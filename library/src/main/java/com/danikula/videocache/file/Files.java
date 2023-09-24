@@ -1,8 +1,7 @@
 package com.danikula.videocache.file;
 
 import android.os.Build;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,7 +65,7 @@ class Files {
                 modify(file);
                 if (file.lastModified() < now) {
                     // NOTE: apparently this is a known issue (see: http://stackoverflow.com/questions/6633748/file-lastmodified-is-never-what-was-set-with-file-setlastmodified)
-                    LOG.warn("Last modified date {} is not set for file {}", new Date(file.lastModified()), file.getAbsolutePath());
+                    Log.w("WARNING", "Last modified date {} is not set for file {}", new Date(file.lastModified()), file.getAbsolutePath());
                 }
             }
         }

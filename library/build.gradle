@@ -2,14 +2,10 @@ buildscript {
     repositories {
         jcenter()
     }
-    dependencies {
-//        classpath 'com.novoda:bintray-release:0.9.2'
-    }
 }
 
 apply plugin: 'com.android.library'
 apply plugin: 'idea'
-//apply plugin: 'bintray-release'
 
 android {
     defaultConfig {
@@ -30,10 +26,6 @@ idea {
         downloadJavadoc = true
         downloadSources = true
     }
-}
-
-dependencies {
-    implementation 'org.slf4j:slf4j-android:2.0.9'
 }
 
 //publish {
