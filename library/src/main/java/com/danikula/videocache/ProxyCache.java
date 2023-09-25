@@ -173,7 +173,7 @@ class ProxyCache {
     protected final void onError(final Throwable e) {
         boolean interruption = e instanceof InterruptedProxyCacheException;
         if (interruption) {
-            Log.d(TAG, "ProxyCache is interrupted", "");
+            Log.d(TAG, "ProxyCache is interrupted", e);
         } else {
             Log.e(TAG, "ProxyCache error", e);
         }

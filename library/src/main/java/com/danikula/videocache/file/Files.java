@@ -20,9 +20,6 @@ import java.util.List;
  * @author Alexey Danilov (danikula@gmail.com).
  */
 class Files {
-
-    private static final Logger LOG = LoggerFactory.getLogger("Files");
-
     static void makeDir(File directory) throws IOException {
         if (directory.exists()) {
             if (!directory.isDirectory()) {
@@ -65,7 +62,7 @@ class Files {
                 modify(file);
                 if (file.lastModified() < now) {
                     // NOTE: apparently this is a known issue (see: http://stackoverflow.com/questions/6633748/file-lastmodified-is-never-what-was-set-with-file-setlastmodified)
-                    Log.w("WARNING", "Last modified date {} is not set for file {}", new Date(file.lastModified()), file.getAbsolutePath());
+                    Log.w("WARNING", "Last modified date {} is not set for file {}"+new Date(file.lastModified())+ file.getAbsolutePath());
                 }
             }
         }

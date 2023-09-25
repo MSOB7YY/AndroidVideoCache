@@ -156,7 +156,7 @@ public class HttpUrlSource implements Source {
         int redirectCount = 0;
         String url = this.sourceInfo.url;
         do {
-            Log.d(TAG, "Open connection " + (offset > 0 ? " with offset " + offset : "") + " to " + url, "");
+            Log.d(TAG, "Open connection " + (offset > 0 ? " with offset " + offset : "") + " to " + url);
             connection = (HttpURLConnection) new URL(url).openConnection();
             injectCustomHeaders(connection, url);
             if (offset > 0) {
